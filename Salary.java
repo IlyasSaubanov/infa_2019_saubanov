@@ -1,24 +1,17 @@
 
-public class Salary {
+public class Salary extends SuperClass{
 	
-	private String companyName;
-	private String name;
+	private String from, to;
 	private int salary;
 	
-	public Salary(String companyName, String name, int salary) {
-		this.companyName = companyName;
-		this.name = name;
+	public Salary(String from, String to, int salary) {
+		super(from, to);
 		this.salary = salary;
 	}
 	
-	public int getTo() {
+	@Override
+	public Integer getContent() {
 		return salary;
 	}
-	public String getName() {
-		return name;
-	}
-	public String getCompanyName() {
-		return companyName;
-	}
-	
 }
+
