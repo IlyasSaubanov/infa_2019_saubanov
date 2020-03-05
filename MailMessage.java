@@ -1,24 +1,16 @@
 
-public class MailMessage {
+public class MailMessage extends SuperClass{
 	
 	private String from, to, content;
 	
 	public MailMessage(String from, String to, String content) {
-		this.from = from;
-		this.to = to;
+		super(from, to);
 		this.content = content;
+		
 	}
-
-	public String getFrom() {
-		return from;
-	}
-
+	
+	@Override
 	public String getContent() {
 		return content;
 	}
-
-	public String getTo() {
-		return to;
-	}
-	
 }
