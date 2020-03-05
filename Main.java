@@ -2,14 +2,12 @@ import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 public class Main {
 	public static void main(String[] args) {
-		String randomFrom = "..."; //Любая случайная строка. 
-		String randomTo = "...";  //Любая случайная строка. 
-		int randomSalary = 100; //Любое случайное число.
+		String randomFrom = "..."; //Р›СЋР±Р°СЏ СЃР»СѓС‡Р°Р№РЅР°СЏ СЃС‚СЂРѕРєР°. 
+		String randomTo = "...";  //Р›СЋР±Р°СЏ СЃР»СѓС‡Р°Р№РЅР°СЏ СЃС‚СЂРѕРєР°. 
+		int randomSalary = 100; //Р›СЋР±РѕРµ СЃР»СѓС‡Р°Р№РЅРѕРµ С‡РёСЃР»Рѕ.
 
 		MailMessage firstMessage = new MailMessage(
 		        "Robert Howard",
@@ -17,39 +15,43 @@ public class Main {
 		        "This \"The Shadow over Innsmouth\" story is real masterpiece, Howard!"
 		);
 
-		//Проверим, что сообщение создалось как надо.
-		assert firstMessage.getFrom().equals("Robert Howard"): "Wrong firstMessage from address";
+		//РџСЂРѕРІРµСЂРёРј, С‡С‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ СЃРѕР·РґР°Р»РѕСЃСЊ РєР°Рє РЅР°РґРѕ.
+		assert firstMessage.getFrom().equals("Robert Howardqqw"): "Wrong firstMessage from address";
 		assert firstMessage.getTo().equals("H.P. Lovecraft"): "Wrong firstMessage to address";
 		assert firstMessage.getContent().endsWith("Howard!"): "Wrong firstMessage content ending";
 
 		MailMessage secondMessage = new MailMessage(
 		        "Jonathan Nolan",
 		        "Christopher Nolan",
-		        "Брат, почему все так хвалят только тебя, когда практически все сценарии написал я. Так не честно!"
+		        "Р‘СЂР°С‚, РїРѕС‡РµРјСѓ РІСЃРµ С‚Р°Рє С…РІР°Р»СЏС‚ С‚РѕР»СЊРєРѕ С‚РµР±СЏ, РєРѕРіРґР° РїСЂР°РєС‚РёС‡РµСЃРєРё РІСЃРµ СЃС†РµРЅР°СЂРёРё РЅР°РїРёСЃР°Р» СЏ. РўР°Рє РЅРµ С‡РµСЃС‚РЅРѕ!"
 		);
 
 		MailMessage thirdMessage = new MailMessage(
 		        "Stephen Hawking",
 		        "Christopher Nolan",
-		        "Я так и не понял Интерстеллар."
+		        "РЇ С‚Р°Рє Рё РЅРµ РїРѕРЅСЏР» РРЅС‚РµСЂСЃС‚РµР»Р»Р°СЂ."
 		);
 
 		List<MailMessage> messages = Arrays.asList(
 		        firstMessage, secondMessage, thirdMessage
 		);
 
-		// Создание почтового сервиса.
+		// РЎРѕР·РґР°РЅРёРµ РїРѕС‡С‚РѕРІРѕРіРѕ СЃРµСЂРІРёСЃР°.
 		MailService<String> mailService = new MailService<>();
 
-		// Обработка списка писем почтовым сервисом
+		// РћР±СЂР°Р±РѕС‚РєР° СЃРїРёСЃРєР° РїРёСЃРµРј РїРѕС‡С‚РѕРІС‹Рј СЃРµСЂРІРёСЃРѕРј
 		messages.stream().forEachOrdered(mailService);
 
-		// Получение "почтового ящика",
-		//   где по получателю можно получить список сообщений, которые были ему отправлены
+		// РџРѕР»СѓС‡РµРЅРёРµ "РїРѕС‡С‚РѕРІРѕРіРѕ СЏС‰РёРєР°",
+		//   РіРґРµ РїРѕ РїРѕР»СѓС‡Р°С‚РµР»СЋ РјРѕР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє СЃРѕРѕР±С‰РµРЅРёР№, РєРѕС‚РѕСЂС‹Рµ Р±С‹Р»Рё РµРјСѓ РѕС‚РїСЂР°РІР»РµРЅС‹
 		Map<String, List<String>> mailBox = mailService.getMailBox();
-
-
-		//Проверка почтового ящика
+		
+		List<String> list = mailBox.get("Christopher Nolan");
+		list.stream().forEachOrdered(t -> {
+			System.out.println(t);
+		});
+		
+		//РџСЂРѕРІРµСЂРєР° РїРѕС‡С‚РѕРІРѕРіРѕ СЏС‰РёРєР°
 		assert mailBox.get("H.P. Lovecraft").equals(
 		        Arrays.asList(
 		                "This \"The Shadow over Innsmouth\" story is real masterpiece, Howard!"
@@ -58,28 +60,30 @@ public class Main {
 
 		assert mailBox.get("Christopher Nolan").equals(
 		        Arrays.asList(
-		                "Брат, почему все так хвалят только тебя, когда практически все сценарии написал я. Так не честно!",
-		                "Я так и не понял Интерстеллар."
+		                "Р‘СЂР°С‚, РїРѕС‡РµРјСѓ РІСЃРµ С‚Р°Рє С…РІР°Р»СЏС‚ С‚РѕР»СЊРєРѕ С‚РµР±СЏ, РєРѕРіРґР° РїСЂР°РєС‚РёС‡РµСЃРєРё РІСЃРµ СЃС†РµРЅР°СЂРёРё РЅР°РїРёСЃР°Р» СЏ. РўР°Рє РЅРµ С‡РµСЃС‚РЅРѕ!",
+		                "РЇ С‚Р°Рє Рё РЅРµ РїРѕРЅСЏР» РРЅС‚РµСЂСЃС‚РµР»Р»Р°СЂ."
 		        )
 		): "wrong mailService mailbox content (2)";
 
 		assert mailBox.get(randomTo).equals(Collections.<String>emptyList()): "wrong mailService mailbox content (3)";
 
-		// Создание списка из трех зарплат.
+		// РЎРѕР·РґР°РЅРёРµ СЃРїРёСЃРєР° РёР· С‚СЂРµС… Р·Р°СЂРїР»Р°С‚.
 		Salary salary1 = new Salary("Facebook", "Mark Zuckerberg", 1);
 		Salary salary2 = new Salary("FC Barcelona", "Lionel Messi", Integer.MAX_VALUE);
 		Salary salary3 = new Salary(randomFrom, randomTo, randomSalary);
 
-		// Создание почтового сервиса, обрабатывающего зарплаты.
+		// РЎРѕР·РґР°РЅРёРµ РїРѕС‡С‚РѕРІРѕРіРѕ СЃРµСЂРІРёСЃР°, РѕР±СЂР°Р±Р°С‚С‹РІР°СЋС‰РµРіРѕ Р·Р°СЂРїР»Р°С‚С‹.
 		MailService<Integer> salaryService = new MailService<>();
 
-		// Обработка списка зарплат почтовым сервисом
+		// РћР±СЂР°Р±РѕС‚РєР° СЃРїРёСЃРєР° Р·Р°СЂРїР»Р°С‚ РїРѕС‡С‚РѕРІС‹Рј СЃРµСЂРІРёСЃРѕРј
 		Arrays.asList(salary1, salary2, salary3).forEach(salaryService);
 
-		//Проверка почтового ящика
+		//РџСЂРѕРІРµСЂРєР° РїРѕС‡С‚РѕРІРѕРіРѕ СЏС‰РёРєР°
 		Map<String, List<Integer>> salaries = salaryService.getMailBox();
+		
 		assert salaries.get(salary1.getTo()).equals(Arrays.asList(1)): "wrong salaries mailbox content (1)";
 		assert salaries.get(salary2.getTo()).equals(Arrays.asList(Integer.MAX_VALUE)): "wrong salaries mailbox content (2)";
 		assert salaries.get(randomTo).equals(Arrays.asList(randomSalary)): "wrong salaries mailbox content (3)";
 	}
 }	
+
